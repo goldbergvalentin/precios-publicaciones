@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precios Publicaciones — ML PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════ */
+:root {
+  --bg:         #0f0f13;
+  --bg2:        #17171d;
+  --bg3:        #1e1e27;
+  --bg4:        #26262f;
+  --border:     #2e2e3a;
+  --border2:    #3a3a48;
+  --text:       #e8e8f0;
+  --text2:      #9090a8;
+  --text3:      #5a5a72;
+  --accent:     #FFE600;
+  --accent2:    #e6cf00;
+  --green:      #2eca7f;
+  --red:        #e85555;
+  --red-soft:   rgba(232,85,85,0.12);
+  --green-soft: rgba(46,202,127,0.12);
+  --yellow-soft:rgba(255,230,0,0.08);
+  --ml-bg:      rgba(255,230,0,0.06);
+  --ml-border:  rgba(255,230,0,0.2);
+  --op-bg:      rgba(255,255,255,0.03);
+  --op-border:  rgba(255,255,255,0.08);
+  --tax-bg:     rgba(232,85,85,0.06);
+  --tax-border: rgba(232,85,85,0.2);
+  --radius:     10px;
+  --radius-sm:  6px;
+  --shadow:     0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg:  0 8px 48px rgba(0,0,0,0.6);
+  --font-d:     'Syne', sans-serif;
+  --font-b:     'DM Sans', sans-serif;
+  --font-m:     'DM Mono', monospace;
+  --transition: 0.18s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-b);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-d);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.logo-dot { color: var(--accent); }
+
+.header-meta {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-m);
+}
+
+/* ═══════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════ */
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+@media(min-width: 1024px) {
+  .app {
+    grid-template-columns: 1fr 520px;
+  }
+}
+
+/* ═══════════════════════════════════════
+   MATRIX PANEL (LEFT)
+═══════════════════════════════════════ */
+.matrix-panel {
+  padding: 24px;
+  overflow-x: auto;
+  border-right: 1px solid var(--border);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.panel-title {
+  font-family: var(--font-d);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.panel-title span { color: var(--accent); }
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-b);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+.btn-primary:hover { background: #fff; }
+
+.btn-ghost {
+  background: var(--bg4);
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--text3); }
+
+.btn-danger {
+  background: var(--red-soft);
+  color: var(--red);
+  border: 1px solid rgba(232,85,85,0.3);
+}
+.btn-danger:hover { background: rgba(232,85,85,0.2); }
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 11px;
+}
+
+/* ═══════════════════════════════════════
+   MATRIX TABLE
+═══════════════════════════════════════ */
+.matrix-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.matrix-table th {
+  background: var(--bg3);
+  padding: 10px 14px;
+  font-family: var(--font-d);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text2);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  position: relative;
+}
+
+.matrix-table th:first-child {
+  color: var(--text);
+  min-width: 140px;
+}
+
+.matrix-table th .th-actions {
+  display: none;
+  gap: 4px;
+  margin-left: 8px;
+}
+
+.matrix-table th:hover .th-actions { display: inline-flex; }
+
+.matrix-table td {
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.matrix-table td:last-child { border-right: none; }
+.matrix-table tr:last-child td { border-bottom: none; }
+
+.matrix-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.product-cell {
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.product-cell-actions {
+  display: none;
+  gap: 4px;
+}
+
+.matrix-table tr:hover .product-cell-actions { display: flex; }
+
+.pub-cell {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background var(--transition);
+  min-width: 160px;
+  position: relative;
+}
+
+.pub-cell:hover { background: var(--ml-bg); }
+
+.pub-cell.active {
+  background: var(--yellow-soft);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.pub-cell.empty {
+  opacity: 0.4;
+}
+
+.pub-cell.empty:hover { opacity: 1; }
+
+.pub-num {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 0;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.pub-cell:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { color: var(--accent); }
+
+.pub-price {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.pub-price.empty-price {
+  color: var(--text3);
+  font-size: 12px;
+  font-family: var(--font-b);
+  font-weight: 400;
+}
+
+.pub-gain {
+  font-size: 11px;
+  color: var(--green);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════
+   DETAIL PANEL (RIGHT)
+═══════════════════════════════════════ */
+.detail-panel {
+  background: var(--bg2);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.detail-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  color: var(--text3);
+  text-align: center;
+  padding: 40px;
+}
+
+.detail-empty-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.detail-empty p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 240px;
+}
+
+.detail-content { display: none; flex-direction: column; height: 100%; }
+.detail-content.visible { display: flex; }
+
+.detail-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.detail-title {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.detail-subtitle {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-m);
+  margin-top: 2px;
+}
+
+.detail-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.detail-tab {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition);
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: var(--font-b);
+}
+
+.detail-tab:hover { color: var(--text2); }
+.detail-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+/* ═══════════════════════════════════════
+   CALCULATOR FORM (inside detail)
+═══════════════════════════════════════ */
+.calc-block {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.calc-block-header {
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.block-ml .calc-block-header  { background: var(--ml-bg); color: #c8a800; border-bottom: 1px solid var(--ml-border); }
+.block-op .calc-block-header  { background: var(--op-bg); color: var(--text2); border-bottom: 1px solid var(--op-border); }
+.block-tax .calc-block-header { background: var(--tax-bg); color: #e07070; border-bottom: 1px solid var(--tax-border); }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-row:last-child { border-bottom: none; }
+
+.form-row-3 {
+  grid-template-columns: 1fr auto auto;
+}
+
+.form-label {
+  font-size: 12px;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tt-btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg4);
+  border: none;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.tt-popup {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  width: 220px;
+  z-index: 300;
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+  font-weight: 400;
+  box-shadow: var(--shadow);
+}
+
+.tt-btn:hover .tt-popup,
+.tt-btn:focus .tt-popup { display: block; }
+
+.form-input {
+  width: 88px;
+  padding: 5px 8px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: right;
+  transition: border-color var(--transition);
+  -moz-appearance: textfield;
+}
+
+.form-input::-webkit-outer-spin-button,
+.form-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255,230,0,0.15);
+}
+
+.form-input.invalid { border-color: var(--red); }
+
+.form-suffix {
+  font-size: 11px;
+  color: var(--text3);
+  min-width: 16px;
+  text-align: right;
+}
+
+.form-result {
+  font-size: 12px;
+  color: var(--text2);
+  text-align: right;
+  font-family: var(--font-m);
+  min-width: 88px;
+}
+
+/* Toggle */
+.tog-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tog-track {
+  width: 28px;
+  height: 16px;
+  border-radius: 8px;
+  background: var(--border2);
+  position: relative;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+
+.tog-track.on { background: var(--green); }
+
+.tog-thumb {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  top: 2px;
+  left: 2px;
+  transition: transform var(--transition);
+}
+
+.tog-track.on .tog-thumb { transform: translateX(12px); }
+
+.tog-label {
+  font-size: 10px;
+  color: var(--text3);
+}
+
+/* IVA rows */
+.iva-mini-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 14px;
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+
+.iva-mini-label { color: var(--text3); }
+.iva-mini-val { font-family: var(--font-m); font-weight: 500; }
+.iva-mini-val.credit { color: var(--green); }
+.iva-mini-val.debit  { color: var(--red); }
+
+/* ═══════════════════════════════════════
+   RESULT BOX
+═══════════════════════════════════════ */
+.result-box {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.result-box-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 6px;
+}
+
+.result-price-big {
+  font-family: var(--font-d);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.result-price-big.pending { color: var(--text3); font-size: 24px; letter-spacing: -1px; }
+
+.result-msg {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+  display: none;
+}
+
+.result-msg.visible { display: block; }
+.result-msg strong { color: var(--accent); }
+
+.result-gain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.result-gain-label { color: var(--text2); }
+.result-gain-val {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--green);
+}
+
+.btn-calc {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--font-d);
+  font-weight: 800;
+  font-size: 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 8px;
+}
+
+.btn-calc:disabled {
+  background: var(--bg4);
+  color: var(--text3);
+  cursor: not-allowed;
+}
+
+.btn-calc:not(:disabled):hover { background: #fff; }
+
+.btn-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn-save {
+  padding: 9px;
+  background: var(--green-soft);
+  color: var(--green);
+  border: 1px solid rgba(46,202,127,0.3);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-b);
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: none;
+}
+
+.btn-save.visible { display: block; }
+.btn-save:hover { background: rgba(46,202,127,0.2); }
+
+.btn-wa {
+  padding: 9px;
+  background: rgba(37,211,102,0.12);
+  color: #25D366;
+  border: 1px solid rgba(37,211,102,0.3);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-b);
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: none;
+}
+
+.btn-wa.visible { display: block; }
+.btn-wa:hover { background: rgba(37,211,102,0.2); }
+
+/* ═══════════════════════════════════════
+   IVA CARD
+═══════════════════════════════════════ */
+.iva-card {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 12px;
+  display: none;
+}
+
+.iva-card.visible { display: block; }
+
+.iva-card-header {
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg4);
+}
+
+.iva-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.iva-card-row:last-child { border-bottom: none; }
+.iva-card-label { color: var(--text2); }
+.iva-card-val { font-family: var(--font-m); font-weight: 500; }
+.iva-deb { color: var(--red); }
+.iva-cred { color: var(--green); }
+.iva-total-row { background: var(--red-soft); }
+.iva-total-row .iva-card-label { font-weight: 700; color: var(--text); }
+.iva-total-row .iva-card-val { color: var(--red); font-size: 14px; }
+
+/* ═══════════════════════════════════════
+   HISTORIAL TAB
+═══════════════════════════════════════ */
+.hist-item {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  margin-bottom: 8px;
+}
+
+.hist-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.hist-price {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--accent);
+}
+
+.hist-date {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-m);
+}
+
+.hist-params {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.hist-empty {
+  text-align: center;
+  color: var(--text3);
+  font-size: 13px;
+  padding: 40px 20px;
+}
+
+/* ═══════════════════════════════════════
+   COMPARATIVA TAB
+═══════════════════════════════════════ */
+.comp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.comp-cond {
+  font-size: 12px;
+  color: var(--text2);
+  flex: 1;
+}
+
+.comp-price {
+  font-family: var(--font-d);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.comp-price.no-calc {
+  color: var(--text3);
+  font-size: 12px;
+  font-family: var(--font-b);
+  font-weight: 400;
+}
+
+.comp-gain {
+  font-size: 11px;
+  color: var(--green);
+}
+
+/* ═══════════════════════════════════════
+   MODALS
+═══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border2);
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal h3 {
+  font-family: var(--font-d);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.modal p {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 13px;
+  margin-bottom: 16px;
+  transition: border-color var(--transition);
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  z-index: 600;
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--green-soft); border-color: rgba(46,202,127,0.4); color: var(--green); }
+.toast.error   { background: var(--red-soft); border-color: rgba(232,85,85,0.4); color: var(--red); }
+
+/* ═══════════════════════════════════════
+   LOADING
+═══════════════════════════════════════ */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loading-overlay.hidden { display: none; }
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 13px;
+  color: var(--text3);
+}
+
+/* ═══════════════════════════════════════
+   SYNC INDICATOR
+═══════════════════════════════════════ */
+.sync-indicator {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-m);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sync-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text3);
+}
+
+.sync-dot.synced { background: var(--green); }
+.sync-dot.syncing {
+  background: var(--accent);
+  animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:1023px) {
+  .detail-panel {
+    position: fixed;
+    inset: 52px 0 0 0;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    z-index: 200;
+    height: calc(100vh - 52px);
+  }
+  .detail-panel.open { transform: translateX(0); }
+  .back-btn { display: flex !important; }
+}
+
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.back-btn:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Cargando datos...</div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    Precios<span class="logo-dot">.</span>Publicaciones
+  </div>
+  <div class="sync-indicator" id="syncIndicator">
+    <div class="sync-dot" id="syncDot"></div>
+    <span id="syncText">—</span>
+  </div>
+</header>
+
+<!-- APP -->
+<div class="app">
+
+  <!-- LEFT: MATRIX -->
+  <div class="matrix-panel">
+    <div class="panel-header">
+      <div class="panel-title">Matriz de <span>Productos</span></div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="openAddCondicion()">+ Condición</button>
+        <button class="btn btn-ghost" onclick="openAddProducto()">+ Producto</button>
+        <button class="btn btn-ghost" onclick="exportarExcel()">↓ Excel</button>
+      </div>
+    </div>
+
+    <div class="matrix-wrap">
+      <table class="matrix-table" id="matrixTable">
+        <thead id="matrixHead"></thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RIGHT: DETAIL -->
+  <div class="detail-panel" id="detailPanel">
+
+    <!-- EMPTY STATE -->
+    <div class="detail-empty" id="detailEmpty">
+      <div class="detail-empty-icon">📊</div>
+      <p>Seleccioná una celda de la matriz para ver o cargar los datos de esa publicación.</p>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="detail-content" id="detailContent">
+
+      <div class="detail-header">
+        <div>
+          <button class="back-btn" onclick="closeDetail()">← Volver</button>
+          <div class="detail-title" id="detailTitle">—</div>
+          <div class="detail-subtitle" id="detailSubtitle">—</div>
+        </div>
+      </div>
+
+      <div class="detail-tabs">
+        <button class="detail-tab active" onclick="switchTab('calc')">Calculadora</button>
+        <button class="detail-tab" onclick="switchTab('historial')">Historial</button>
+        <button class="detail-tab" onclick="switchTab('comparativa')">Comparativa</button>
+      </div>
+
+      <!-- TAB: CALCULADORA -->
+      <div class="detail-body" id="tabCalc">
+
+        <!-- RESULT -->
+        <div class="result-box">
+          <div class="result-box-label">Precio de Publicación</div>
+          <div class="result-price-big pending" id="resultPrice">Sin calcular</div>
+          <div class="result-msg" id="resultMsg"></div>
+          <div class="result-gain" id="resultGainRow" style="display:none">
+            <span class="result-gain-label">Ganancia Real Final</span>
+            <span class="result-gain-val" id="resultGainVal">—</span>
+          </div>
+        </div>
+
+        <button class="btn-calc" id="btnCalc" onclick="calcular()" disabled>CALCULAR PRECIO</button>
+
+        <div class="btn-row-2" style="margin-bottom:12px;">
+          <button class="btn-save" id="btnSave" onclick="guardarResultado()">💾 Guardar</button>
+          <button class="btn-wa" id="btnWa" onclick="compartirWA()">📲 WhatsApp</button>
+        </div>
+
+        <!-- IVA DESGLOSE -->
+        <div class="iva-card" id="ivaCard">
+          <div class="iva-card-header">Desglose IVA</div>
+          <div class="iva-card-row">
+            <span class="iva-card-label">IVA Débito Fiscal</span>
+            <span class="iva-card-val iva-deb" id="ivaDebitoVal">—</span>
+          </div>
+          <div class="iva-card-row">
+            <span class="iva-card-label">IVA Crédito Fiscal</span>
+            <span class="iva-card-val iva-cred" id="ivaCreditoVal">—</span>
+          </div>
+          <div class="iva-card-row iva-total-row">
+            <span class="iva-card-label">IVA a Pagar (AFIP)</span>
+            <span class="iva-card-val" id="ivaAPagarVal">—</span>
+          </div>
+        </div>
+
+        <!-- BLOCK ML -->
+        <div class="calc-block block-ml">
+          <div class="calc-block-header">🛒 Costos Mercado Libre</div>
+
+          <!-- Descuento -->
+          <div class="form-row form-row-3">
+            <div class="form-label">% Descuento Campaña <button class="tt-btn">i<span class="tt-popup">Indicá el % de descuento que querés contemplar para que puedas participar en la central de promociones.</span></button></div>
+            <input class="form-input" type="number" id="f_descuento" min="0" max="100" step="0.01" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">%</span>
+          </div>
+
+          <!-- Precio venta efectivo -->
+          <div class="form-row form-row-3" style="background:var(--yellow-soft)">
+            <div class="form-label" style="font-weight:600;color:var(--text)">Precio Venta Efectivo</div>
+            <span class="form-result" id="f_precioVenta">—</span>
+            <span class="form-suffix"></span>
+          </div>
+
+          <!-- Comisión -->
+          <div class="form-row form-row-3">
+            <div class="form-label">% Comisión ML <button class="tt-btn">i<span class="tt-popup">Ingresá el porcentaje de comisión que te cobra Mercado Libre según la categoría de tu producto y tu nivel de reputación. Podés consultarlo en tu panel de vendedor.</span></button></div>
+            <input class="form-input" type="number" id="f_comision" min="0" max="100" step="0.01" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">%</span>
+          </div>
+
+          <!-- IVA comisión -->
+          <div class="iva-mini-row" id="row_ivaComision">
+            <span class="iva-mini-label">↳ Crédito fiscal comisión</span>
+            <span class="iva-mini-val credit" id="f_ivaComision">—</span>
+          </div>
+
+          <!-- Financiación -->
+          <div class="form-row form-row-3">
+            <div class="form-label">% Financiación / Cuotas <button class="tt-btn">i<span class="tt-popup">Ingresá el costo financiero que aplica según las cuotas que ofrecés. Si no ofrecés cuotas, indicá 0.</span></button></div>
+            <input class="form-input" type="number" id="f_financiacion" min="0" max="100" step="0.01" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">%</span>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaFinanciacion">
+            <span class="iva-mini-label">↳ Crédito fiscal financiación</span>
+            <span class="iva-mini-val credit" id="f_ivaFinanciacion">—</span>
+          </div>
+
+          <!-- Publicidad -->
+          <div class="form-row form-row-3">
+            <div class="form-label">% Publicidad (Product Ads) <button class="tt-btn">i<span class="tt-popup">Ingresá el porcentaje que destinás a publicidad dentro de Mercado Libre (Product Ads).</span></button></div>
+            <input class="form-input" type="number" id="f_publicidad" min="0" max="100" step="0.01" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">%</span>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaPublicidad">
+            <span class="iva-mini-label">↳ Crédito fiscal publicidad</span>
+            <span class="iva-mini-val credit" id="f_ivaPublicidad">—</span>
+          </div>
+
+          <!-- Envío -->
+          <div class="form-row form-row-3">
+            <div class="form-label">Costo Envío <button class="tt-btn">i<span class="tt-popup">Si ofrecés envío gratis, indicá el costo correspondiente según la categoría de tu producto. Si no ofrecés envío gratis, indicá 0.</span></button></div>
+            <input class="form-input" type="number" id="f_envio" min="0" step="1" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">$</span>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaEnvio">
+            <span class="iva-mini-label">↳ Crédito fiscal envío</span>
+            <span class="iva-mini-val credit" id="f_ivaEnvio">—</span>
+          </div>
+
+          <!-- Cargo fijo -->
+          <div class="form-row form-row-3">
+            <div class="form-label">Cargo Fijo <button class="tt-btn">i<span class="tt-popup">Si tu producto se vende por debajo de $33.000, Mercado Libre te cobra un cargo fijo según el tramo de precio. Ingresá el monto que creas apropiado. Al obtener el precio final, verificá que haya quedado en el segmento correspondiente. Si se excede, volvé a hacer el cálculo indicando el valor correspondiente.</span></button></div>
+            <input class="form-input" type="number" id="f_cargo" min="0" step="1" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">$</span>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaCargo">
+            <span class="iva-mini-label">↳ Crédito fiscal cargo fijo</span>
+            <span class="iva-mini-val credit" id="f_ivaCargo">—</span>
+          </div>
+
+        </div>
+
+        <!-- BLOCK OPERATIVOS -->
+        <div class="calc-block block-op">
+          <div class="calc-block-header">📦 Costos Operativos</div>
+
+          <!-- Costo producto -->
+          <div class="form-row form-row-3">
+            <div class="form-label">Costo Producto (sin IVA) <button class="tt-btn">i<span class="tt-popup">Ingresá el costo neto de tu producto, sin IVA. Es el valor que figura en la factura A de tu proveedor antes de impuestos.</span></button></div>
+            <input class="form-input" type="number" id="f_costo" min="0" step="1" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">$</span>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaProducto">
+            <span class="iva-mini-label">↳ Crédito fiscal producto</span>
+            <span class="iva-mini-val credit" id="f_ivaProducto">—</span>
+          </div>
+
+          <!-- Fallas -->
+          <div class="form-row form-row-3">
+            <div class="form-label">% Divisor de Fallas <button class="tt-btn">i<span class="tt-popup">Ingresá el porcentaje de productos con fallas que estimás absorber. Este valor infla levemente el costo base para proteger tu margen real. Si no querés contemplarlo, indicá 0.</span></button></div>
+            <input class="form-input" type="number" id="f_fallas" min="0" max="99" step="0.01" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">%</span>
+          </div>
+
+          <!-- Otros 1 -->
+          <div class="form-row form-row-3">
+            <div class="form-label">Otros Costos 1 <button class="tt-btn">i<span class="tt-popup">Ingresá cualquier costo adicional que no esté contemplado en los campos anteriores (embalaje, insumos, etc.). Si tenés factura A, activá el selector para que contemplemos el crédito fiscal correspondiente. Si no tenés costos adicionales, indicá 0.</span></button></div>
+            <input class="form-input" type="number" id="f_otros1" min="0" step="1" placeholder="0" oninput="onFormChange()">
+            <label class="tog-wrap" onclick="toggleFactura(1)">
+              <div class="tog-track" id="tog1"><div class="tog-thumb"></div></div>
+              <span class="tog-label">Fac.A</span>
+            </label>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaOtros1" style="display:none">
+            <span class="iva-mini-label">↳ Crédito fiscal otros 1</span>
+            <span class="iva-mini-val credit" id="f_ivaOtros1">—</span>
+          </div>
+
+          <!-- Otros 2 -->
+          <div class="form-row form-row-3">
+            <div class="form-label">Otros Costos 2 <button class="tt-btn">i<span class="tt-popup">Ingresá cualquier costo adicional que no esté contemplado en los campos anteriores (embalaje, insumos, etc.). Si tenés factura A, activá el selector para que contemplemos el crédito fiscal correspondiente. Si no tenés costos adicionales, indicá 0.</span></button></div>
+            <input class="form-input" type="number" id="f_otros2" min="0" step="1" placeholder="0" oninput="onFormChange()">
+            <label class="tog-wrap" onclick="toggleFactura(2)">
+              <div class="tog-track" id="tog2"><div class="tog-thumb"></div></div>
+              <span class="tog-label">Fac.A</span>
+            </label>
+          </div>
+
+          <div class="iva-mini-row" id="row_ivaOtros2" style="display:none">
+            <span class="iva-mini-label">↳ Crédito fiscal otros 2</span>
+            <span class="iva-mini-val credit" id="f_ivaOtros2">—</span>
+          </div>
+
+        </div>
+
+        <!-- BLOCK IMPOSITIVOS -->
+        <div class="calc-block block-tax">
+          <div class="calc-block-header">🏛️ Costos Impositivos</div>
+
+          <!-- IIBB -->
+          <div class="form-row form-row-3">
+            <div class="form-label">% IIBB <button class="tt-btn">i<span class="tt-popup">Ingresá la alícuota de Ingresos Brutos que te corresponde según tu provincia y actividad. Si estás exento, indicá 0.</span></button></div>
+            <input class="form-input" type="number" id="f_iibb" min="0" max="100" step="0.01" placeholder="0" oninput="onFormChange()">
+            <span class="form-suffix">%</span>
+          </div>
+
+          <!-- Ganancia objetivo -->
+          <div class="form-row form-row-3" style="background:var(--yellow-soft)">
+            <div class="form-label" style="color:var(--text);font-weight:600;">Ganancia Objetivo <button class="tt-btn">i<span class="tt-popup">Ingresá el monto en pesos que querés ganar por cada unidad vendida, después de todos los costos. El sistema te va a indicar a qué precio publicar para obtener el monto que indiques.</span></button></div>
+            <input class="form-input" type="number" id="f_ganancia" min="0" step="1" placeholder="0" oninput="onFormChange()" style="font-weight:700;">
+            <span class="form-suffix">$</span>
+          </div>
+
+          <!-- N° Publicación -->
+          <div class="form-row form-row-3">
+            <div class="form-label">N° Publicación ML</div>
+            <input class="form-input" type="text" id="f_pubnum" placeholder="—" oninput="onFormChange()" style="width:120px;text-align:left;">
+            <button class="btn btn-sm btn-ghost" onclick="copiarPubNum()" title="Copiar">📋</button>
+          </div>
+
+        </div>
+
+      </div><!-- /tabCalc -->
+
+      <!-- TAB: HISTORIAL -->
+      <div class="detail-body" id="tabHistorial" style="display:none">
+        <div id="historialContent"></div>
+      </div>
+
+      <!-- TAB: COMPARATIVA -->
+      <div class="detail-body" id="tabComparativa" style="display:none">
+        <div id="comparativaContent"></div>
+      </div>
+
+    </div><!-- /detail-content -->
+  </div><!-- /detail-panel -->
+
+</div><!-- /app -->
+
+<!-- MODAL: ADD PRODUCTO -->
+<div class="modal-overlay" id="modalProducto">
+  <div class="modal">
+    <h3>Agregar Producto</h3>
+    <p>Ingresá el nombre del producto tal como lo reconocés internamente.</p>
+    <input class="modal-input" type="text" id="inputProducto" placeholder="Ej: BAHIA" onkeydown="if(event.key==='Enter')confirmarAddProducto()">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modalProducto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarAddProducto()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD CONDICION -->
+<div class="modal-overlay" id="modalCondicion">
+  <div class="modal">
+    <h3>Agregar Condición de Financiación</h3>
+    <p>Ingresá el nombre de la nueva condición de financiación.</p>
+    <input class="modal-input" type="text" id="inputCondicion" placeholder="Ej: 6 cuotas sin interés" onkeydown="if(event.key==='Enter')confirmarAddCondicion()">
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modalCondicion')">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarAddCondicion()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRMAR ELIMINAR -->
+<div class="modal-overlay" id="modalConfirm">
+  <div class="modal">
+    <h3 id="confirmTitle">¿Eliminar?</h3>
+    <p id="confirmMsg">Esta acción eliminará el producto y todas sus fichas guardadas. No se puede deshacer.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modalConfirm')">Cancelar</button>
+      <button class="btn btn-danger" id="confirmBtn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbyS9OQwGqB9iUwCWa21o2Hq-NRMUa3N6y0rAJduGpq_BzqptZoTT7JbqLUIZrN3jpd_/exec';
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let productos = [];       // ['BAHIA', 'LENNA', ...]
+let condiciones = [];     // ['Sin cuotas', '3 cuotas', ...]
+let fichas = {};          // { 'BAHIA__Sin cuotas': { params, historial, precioCalc } }
+let currentCell = null;   // { producto, condicion }
+let facturaA1 = false;
+let facturaA2 = false;
+let lastCalcResult = null;
+let currentTab = 'calc';
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+  setSyncing();
+  try {
+    const res = await apiCall('getData', {});
+    if (res.success && res.data) {
+      parseSheetData(res.data);
+    } else {
+      // Primera vez: inicializar con estructura vacía
+      productos = [];
+      condiciones = ['Sin cuotas', '3 cuotas', '6 cuotas'];
+    }
+    setSynced();
+  } catch(e) {
+    setError();
+    showToast('Error al cargar datos. Verificá tu conexión.', 'error');
+  }
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  renderMatrix();
+}
+
+function parseSheetData(data) {
+  // Row 0: headers ['PRODUCTO', 'Sin cuotas', '3 cuotas', ...]
+  // Row 1+: ['BAHIA', ficha_json, ficha_json, ...]
+  if (!data || data.length === 0) {
+    productos = [];
+    condiciones = ['Sin cuotas', '3 cuotas', '6 cuotas'];
+    return;
+  }
+
+  const headers = data[0];
+  condiciones = headers.slice(1).filter(h => h !== '');
+
+  if (condiciones.length === 0) condiciones = ['Sin cuotas', '3 cuotas', '6 cuotas'];
+
+  productos = [];
+  fichas = {};
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const prod = row[0];
+    if (!prod) continue;
+    productos.push(prod);
+    condiciones.forEach((cond, ci) => {
+      const key = makeKey(prod, cond);
+      const raw = row[ci + 1];
+      if (raw) {
+        try { fichas[key] = JSON.parse(raw); } catch(e) { fichas[key] = null; }
+      }
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════
+// API
+// ═══════════════════════════════════════════════
+async function apiCall(action, params) {
+  const url = new URL(API_URL);
+  url.searchParams.set('action', action);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  const res = await fetch(url.toString());
+  return await res.json();
+}
+
+async function saveToSheet() {
+  setSyncing();
+  try {
+    // Build full data array
+    const headerRow = ['PRODUCTO', ...condiciones];
+    const rows = [headerRow];
+    productos.forEach(prod => {
+      const row = [prod];
+      condiciones.forEach(cond => {
+        const key = makeKey(prod, cond);
+        row.push(fichas[key] ? JSON.stringify(fichas[key]) : '');
+      });
+      rows.push(row);
+    });
+    await apiCall('saveAll', { data: JSON.stringify(rows) });
+    setSynced();
+  } catch(e) {
+    setError();
+    showToast('Error al guardar. Revisá tu conexión.', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// MATRIX RENDER
+// ═══════════════════════════════════════════════
+function makeKey(prod, cond) {
+  return `${prod}__${cond}`;
+}
+
+function renderMatrix() {
+  const head = document.getElementById('matrixHead');
+  const body = document.getElementById('matrixBody');
+
+  // HEADER
+  let thHtml = `<tr><th>PRODUCTO</th>`;
+  condiciones.forEach(cond => {
+    thHtml += `<th>
+      ${escHtml(cond)}
+      <span class="th-actions">
+        <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();eliminarCondicion('${escAttr(cond)}')" title="Eliminar condición">×</button>
+      </span>
+    </th>`;
+  });
+  thHtml += `</tr>`;
+  head.innerHTML = thHtml;
+
+  // BODY
+  let tbHtml = '';
+  productos.forEach(prod => {
+    tbHtml += `<tr>
+      <td>
+        <div class="product-cell">
+          <span>${escHtml(prod)}</span>
+          <span class="product-cell-actions">
+            <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();pedirEliminarProducto('${escAttr(prod)}')" title="Eliminar">×</button>
+          </span>
+        </div>
+      </td>`;
+    condiciones.forEach(cond => {
+      const key = makeKey(prod, cond);
+      const ficha = fichas[key];
+      const isActive = currentCell && currentCell.producto === prod && currentCell.condicion === cond;
+      const precio = ficha && ficha.precioCalc ? formatM(ficha.precioCalc) : null;
+      const ganancia = ficha && ficha.params && ficha.params.gananciaObj ? formatM(ficha.params.gananciaObj) : null;
+      const pubnum = ficha && ficha.params && ficha.params.pubnum ? ficha.params.pubnum : null;
+
+      tbHtml += `<td>
+        <div class="pub-cell ${isActive ? 'active' : ''} ${!ficha ? 'empty' : ''}"
+             onclick="selectCell('${escAttr(prod)}','${escAttr(cond)}')">
+          ${pubnum ? `<div class="pub-num">
+            <span>${escHtml(pubnum)}</span>
+            <button class="copy-btn" onclick="event.stopPropagation();copiarTexto('${escAttr(pubnum)}')" title="Copiar">📋</button>
+          </div>` : ''}
+          <div class="${precio ? 'pub-price' : 'pub-price empty-price'}">${precio || '+ Cargar'}</div>
+          ${ganancia ? `<div class="pub-gain">Meta: ${ganancia}</div>` : ''}
+        </div>
+      </td>`;
+    });
+    tbHtml += `</tr>`;
+  });
+
+  if (productos.length === 0) {
+    tbHtml = `<tr><td colspan="${condiciones.length + 1}" style="text-align:center;padding:40px;color:var(--text3);font-size:13px;">
+      Agregá tu primer producto con el botón "+ Producto"
+    </td></tr>`;
+  }
+
+  body.innerHTML = tbHtml;
+}
+
+// ═══════════════════════════════════════════════
+// CELL SELECTION
+// ═══════════════════════════════════════════════
+function selectCell(prod, cond) {
+  currentCell = { producto: prod, condicion: cond };
+  lastCalcResult = null;
+
+  // Mobile: open panel
+  document.getElementById('detailPanel').classList.add('open');
+
+  // Update titles
+  document.getElementById('detailTitle').textContent = `${prod}`;
+  document.getElementById('detailSubtitle').textContent = cond;
+
+  // Show content
+  document.getElementById('detailEmpty').style.display = 'none';
+  document.getElementById('detailContent').classList.add('visible');
+
+  // Load ficha
+  const key = makeKey(prod, cond);
+  const ficha = fichas[key];
+
+  // Reset form
+  resetForm();
+
+  if (ficha && ficha.params) {
+    loadParams(ficha.params);
+  }
+
+  // Reset result display
+  resetResultDisplay();
+  if (ficha && ficha.precioCalc) {
+    showSavedResult(ficha);
+  }
+
+  // Switch to calc tab
+  switchTab('calc');
+
+  // Re-render matrix to update active cell
+  renderMatrix();
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════
+// FORM LOAD / RESET
+// ═══════════════════════════════════════════════
+const FIELD_IDS = ['descuento','comision','financiacion','publicidad','envio','cargo','costo','fallas','otros1','otros2','iibb','ganancia','pubnum'];
+
+function resetForm() {
+  FIELD_IDS.forEach(id => {
+    const el = document.getElementById('f_' + id);
+    if (el) el.value = '';
+  });
+  facturaA1 = false;
+  facturaA2 = false;
+  document.getElementById('tog1').classList.remove('on');
+  document.getElementById('tog2').classList.remove('on');
+  document.getElementById('row_ivaOtros1').style.display = 'none';
+  document.getElementById('row_ivaOtros2').style.display = 'none';
+  clearIvaFields();
+  document.getElementById('btnCalc').disabled = true;
+}
+
+function loadParams(p) {
+  const map = {
+    descuento: p.descuento, comision: p.comision, financiacion: p.financiacion,
+    publicidad: p.publicidad, envio: p.envio, cargo: p.cargo,
+    costo: p.costo, fallas: p.fallas, otros1: p.otros1, otros2: p.otros2,
+    iibb: p.iibb, ganancia: p.gananciaObj, pubnum: p.pubnum
+  };
+  Object.entries(map).forEach(([id, val]) => {
+    const el = document.getElementById('f_' + id);
+    if (el && val !== undefined && val !== null) el.value = val;
+  });
+  if (p.facturaA1) { facturaA1 = true; document.getElementById('tog1').classList.add('on'); document.getElementById('row_ivaOtros1').style.display = ''; }
+  if (p.facturaA2) { facturaA2 = true; document.getElementById('tog2').classList.add('on'); document.getElementById('row_ivaOtros2').style.display = ''; }
+  checkEnableCalc();
+}
+
+function getFormValues() {
+  const g = (id) => { const el = document.getElementById('f_'+id); if (!el) return null; const v = el.value; return v === '' ? null : parseFloat(v); };
+  const gs = (id) => { const el = document.getElementById('f_'+id); return el ? el.value.trim() : ''; };
+  return {
+    descuento: g('descuento'), comision: g('comision'), financiacion: g('financiacion'),
+    publicidad: g('publicidad'), envio: g('envio'), cargo: g('cargo'),
+    costo: g('costo'), fallas: g('fallas'), otros1: g('otros1'), otros2: g('otros2'),
+    iibb: g('iibb'), gananciaObj: g('ganancia'), pubnum: gs('pubnum'),
+    facturaA1, facturaA2
+  };
+}
+
+function allFilled(v) {
+  const required = ['descuento','comision','financiacion','publicidad','envio','cargo','costo','fallas','otros1','otros2','iibb','gananciaObj'];
+  return required.every(k => v[k] !== null && !isNaN(v[k]));
+}
+
+function checkEnableCalc() {
+  const v = getFormValues();
+  document.getElementById('btnCalc').disabled = !allFilled(v);
+}
+
+function onFormChange() {
+  checkEnableCalc();
+}
+
+// ═══════════════════════════════════════════════
+// TOGGLE FACTURA A
+// ═══════════════════════════════════════════════
+function toggleFactura(n) {
+  if (n === 1) {
+    facturaA1 = !facturaA1;
+    document.getElementById('tog1').classList.toggle('on', facturaA1);
+    document.getElementById('row_ivaOtros1').style.display = facturaA1 ? '' : 'none';
+  } else {
+    facturaA2 = !facturaA2;
+    document.getElementById('tog2').classList.toggle('on', facturaA2);
+    document.getElementById('row_ivaOtros2').style.display = facturaA2 ? '' : 'none';
+  }
+}
+
+// ═══════════════════════════════════════════════
+// CALCULATION ENGINE (RI)
+// ═══════════════════════════════════════════════
+function calcularRI(precioPublicado, v) {
+  const desc    = v.descuento / 100;
+  const com     = v.comision / 100;
+  const fin     = v.financiacion / 100;
+  const pub     = v.publicidad / 100;
+  const fallas  = v.fallas / 100;
+  const iibbPct = v.iibb / 100;
+
+  const precioVenta = precioPublicado * (1 - desc);
+
+  const costoComision     = precioVenta * com;
+  const costoFinanciacion = precioVenta * fin;
+  const costoPublicidad   = precioPublicado * pub; // única excepción
+  const costoEnvio        = v.envio;
+  const costoCargo        = v.cargo;
+  const divisorFallas     = fallas > 0 ? (v.costo / (1 - fallas)) - v.costo : 0;
+
+  const ivaDebito = precioVenta * (21 / 121);
+
+  const ivaCreditoComision     = (costoComision / 1.21) * 0.21;
+  const ivaCreditoFinanciacion = (costoFinanciacion / 1.21) * 0.21;
+  const ivaCreditoPublicidad   = (costoPublicidad / 1.21) * 0.21;
+  const ivaCreditoEnvio        = (costoEnvio / 1.21) * 0.21;
+  const ivaCreditoCargo        = (costoCargo / 1.21) * 0.21;
+  const ivaCreditoProducto     = v.costo * 0.21;
+  const ivaCreditoOtros1       = v.facturaA1 ? (v.otros1 / 1.21) * 0.21 : 0;
+  const ivaCreditoOtros2       = v.facturaA2 ? (v.otros2 / 1.21) * 0.21 : 0;
+
+  const ivaCredito = ivaCreditoComision + ivaCreditoFinanciacion + ivaCreditoPublicidad +
+                     ivaCreditoEnvio + ivaCreditoCargo + ivaCreditoProducto +
+                     ivaCreditoOtros1 + ivaCreditoOtros2;
+
+  const ivaAPagar = Math.max(ivaDebito - ivaCredito, 0);
+
+  const iibb = (precioVenta / 1.21) * iibbPct;
+
+  const ganancia = (precioVenta / 1.21)
+    - (v.costo + divisorFallas)
+    - (costoComision / 1.21)
+    - (costoFinanciacion / 1.21)
+    - (costoPublicidad / 1.21)
+    - (costoEnvio / 1.21)
+    - (costoCargo / 1.21)
+    - (v.facturaA1 ? v.otros1 / 1.21 : v.otros1)
+    - (v.facturaA2 ? v.otros2 / 1.21 : v.otros2)
+    - iibb
+    - ivaAPagar;
+
+  return {
+    ganancia, precioVenta,
+    ivaDebito, ivaCredito, ivaAPagar, iibb,
+    costoComision, costoFinanciacion, costoPublicidad,
+    ivaCreditoComision, ivaCreditoFinanciacion, ivaCreditoPublicidad,
+    ivaCreditoEnvio, ivaCreditoCargo, ivaCreditoProducto,
+    ivaCreditoOtros1, ivaCreditoOtros2, divisorFallas
+  };
+}
+
+function goalSeek(v) {
+  let low = 0, high = 100000000, mid;
+  for (let i = 0; i < 200; i++) {
+    mid = (low + high) / 2;
+    const r = calcularRI(mid, v);
+    if (Math.abs(r.ganancia - v.gananciaObj) < 0.001) break;
+    if (r.ganancia < v.gananciaObj) low = mid;
+    else high = mid;
+  }
+  const precioFinal = Math.ceil(mid);
+  return { precioPublicado: precioFinal, resultado: calcularRI(precioFinal, v) };
+}
+
+// ═══════════════════════════════════════════════
+// CALCULAR
+// ═══════════════════════════════════════════════
+function calcular() {
+  const v = getFormValues();
+  if (!allFilled(v)) { showToast('Completá todos los campos', 'error'); return; }
+
+  const { precioPublicado, resultado } = goalSeek(v);
+  lastCalcResult = { precioPublicado, resultado, v };
+
+  // Update result display
+  const priceEl = document.getElementById('resultPrice');
+  priceEl.classList.remove('pending');
+  priceEl.textContent = formatM(precioPublicado);
+
+  const msg = document.getElementById('resultMsg');
+  msg.innerHTML = `Para ganar <strong>${formatM(v.gananciaObj)}</strong> publicá a <strong>${formatM(precioPublicado)}</strong>. Con ese precio podés ofrecer un descuento de hasta el <strong>${v.descuento}%</strong> y aun así cubrir todos tus costos.`;
+  msg.classList.add('visible');
+
+  document.getElementById('resultGainRow').style.display = 'flex';
+  document.getElementById('resultGainVal').textContent = formatM(resultado.ganancia);
+
+  // IVA card
+  document.getElementById('ivaCard').classList.add('visible');
+  document.getElementById('ivaDebitoVal').textContent = formatM(resultado.ivaDebito);
+  document.getElementById('ivaCreditoVal').textContent = formatM(resultado.ivaCredito);
+  document.getElementById('ivaAPagarVal').textContent = formatM(resultado.ivaAPagar);
+
+  // IVA inline
+  setIvaMini('f_ivaComision', resultado.ivaCreditoComision);
+  setIvaMini('f_ivaFinanciacion', resultado.ivaCreditoFinanciacion);
+  setIvaMini('f_ivaPublicidad', resultado.ivaCreditoPublicidad);
+  setIvaMini('f_ivaEnvio', resultado.ivaCreditoEnvio);
+  setIvaMini('f_ivaCargo', resultado.ivaCreditoCargo);
+  setIvaMini('f_ivaProducto', resultado.ivaCreditoProducto);
+  if (facturaA1) setIvaMini('f_ivaOtros1', resultado.ivaCreditoOtros1);
+  if (facturaA2) setIvaMini('f_ivaOtros2', resultado.ivaCreditoOtros2);
+
+  // Precio venta
+  document.getElementById('f_precioVenta').textContent = formatM(resultado.precioVenta);
+
+  // Show buttons
+  document.getElementById('btnSave').classList.add('visible');
+  document.getElementById('btnWa').classList.add('visible');
+
+  showToast('¡Precio calculado!', 'success');
+}
+
+function setIvaMini(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = formatM(val);
+}
+
+function clearIvaFields() {
+  ['f_ivaComision','f_ivaFinanciacion','f_ivaPublicidad','f_ivaEnvio','f_ivaCargo','f_ivaProducto','f_ivaOtros1','f_ivaOtros2','f_precioVenta'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '—';
+  });
+}
+
+function resetResultDisplay() {
+  document.getElementById('resultPrice').classList.add('pending');
+  document.getElementById('resultPrice').textContent = 'Sin calcular';
+  document.getElementById('resultMsg').classList.remove('visible');
+  document.getElementById('resultGainRow').style.display = 'none';
+  document.getElementById('ivaCard').classList.remove('visible');
+  document.getElementById('btnSave').classList.remove('visible');
+  document.getElementById('btnWa').classList.remove('visible');
+  clearIvaFields();
+}
+
+function showSavedResult(ficha) {
+  if (!ficha.precioCalc) return;
+  const priceEl = document.getElementById('resultPrice');
+  priceEl.classList.remove('pending');
+  priceEl.textContent = formatM(ficha.precioCalc);
+  if (ficha.params) {
+    document.getElementById('resultGainRow').style.display = 'flex';
+    document.getElementById('resultGainVal').textContent = formatM(ficha.params.gananciaObj);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// GUARDAR
+// ═══════════════════════════════════════════════
+async function guardarResultado() {
+  if (!lastCalcResult || !currentCell) return;
+  const { precioPublicado, v } = lastCalcResult;
+  const key = makeKey(currentCell.producto, currentCell.condicion);
+
+  if (!fichas[key]) fichas[key] = { historial: [] };
+  if (!fichas[key].historial) fichas[key].historial = [];
+
+  // Add historial entry
+  const prev = fichas[key].precioCalc;
+  if (prev && prev !== precioPublicado) {
+    fichas[key].historial.unshift({
+      fecha: new Date().toLocaleDateString('es-AR'),
+      hora: new Date().toLocaleTimeString('es-AR', {hour:'2-digit',minute:'2-digit'}),
+      precioAnterior: prev,
+      precioNuevo: precioPublicado,
+      params: { ...v }
+    });
+    if (fichas[key].historial.length > 20) fichas[key].historial.pop();
+  }
+
+  fichas[key].precioCalc = precioPublicado;
+  fichas[key].params = { ...v };
+  if (!fichas[key].historial.length) {
+    fichas[key].historial.unshift({
+      fecha: new Date().toLocaleDateString('es-AR'),
+      hora: new Date().toLocaleTimeString('es-AR', {hour:'2-digit',minute:'2-digit'}),
+      precioAnterior: null,
+      precioNuevo: precioPublicado,
+      params: { ...v }
+    });
+  }
+
+  await saveToSheet();
+  renderMatrix();
+  showToast('Guardado correctamente', 'success');
+}
+
+// ═══════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.detail-tab').forEach((el, i) => {
+    el.classList.toggle('active', ['calc','historial','comparativa'][i] === tab);
+  });
+  document.getElementById('tabCalc').style.display        = tab === 'calc' ? '' : 'none';
+  document.getElementById('tabHistorial').style.display   = tab === 'historial' ? '' : 'none';
+  document.getElementById('tabComparativa').style.display = tab === 'comparativa' ? '' : 'none';
+
+  if (tab === 'historial') renderHistorial();
+  if (tab === 'comparativa') renderComparativa();
+}
+
+function renderHistorial() {
+  const el = document.getElementById('historialContent');
+  if (!currentCell) return;
+  const key = makeKey(currentCell.producto, currentCell.condicion);
+  const ficha = fichas[key];
+  const hist = ficha && ficha.historial ? ficha.historial : [];
+
+  if (hist.length === 0) {
+    el.innerHTML = `<div class="hist-empty">No hay cambios registrados aún.<br>Calculá y guardá un precio para comenzar el historial.</div>`;
+    return;
+  }
+
+  el.innerHTML = hist.map(h => `
+    <div class="hist-item">
+      <div class="hist-item-header">
+        <span class="hist-price">${formatM(h.precioNuevo)}</span>
+        <span class="hist-date">${h.fecha} ${h.hora}</span>
+      </div>
+      ${h.precioAnterior ? `<div style="font-size:11px;color:var(--text3);margin-bottom:6px;">Anterior: ${formatM(h.precioAnterior)}</div>` : ''}
+      ${h.params ? `<div class="hist-params">
+        <span>Desc: ${h.params.descuento}%</span>
+        <span>Com: ${h.params.comision}%</span>
+        <span>Pub: ${h.params.publicidad}%</span>
+        <span>Fin: ${h.params.financiacion}%</span>
+        <span>Costo: ${formatM(h.params.costo)}</span>
+        <span>Meta: ${formatM(h.params.gananciaObj)}</span>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderComparativa() {
+  const el = document.getElementById('comparativaContent');
+  if (!currentCell) return;
+
+  el.innerHTML = `
+    <div style="font-size:11px;color:var(--text3);margin-bottom:12px;font-family:var(--font-m);">${currentCell.producto}</div>
+    ${condiciones.map(cond => {
+      const key = makeKey(currentCell.producto, cond);
+      const ficha = fichas[key];
+      const precio = ficha && ficha.precioCalc;
+      const ganancia = ficha && ficha.params && ficha.params.gananciaObj;
+      return `<div class="comp-row">
+        <span class="comp-cond">${escHtml(cond)}</span>
+        <div style="text-align:right;">
+          <div class="${precio ? 'comp-price' : 'comp-price no-calc'}">${precio ? formatM(precio) : 'Sin calcular'}</div>
+          ${ganancia ? `<div class="comp-gain">Meta: ${formatM(ganancia)}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+// ═══════════════════════════════════════════════
+// PRODUCTOS / CONDICIONES
+// ═══════════════════════════════════════════════
+function openAddProducto() { document.getElementById('modalProducto').classList.add('open'); document.getElementById('inputProducto').value = ''; setTimeout(() => document.getElementById('inputProducto').focus(), 100); }
+function openAddCondicion() { document.getElementById('modalCondicion').classList.add('open'); document.getElementById('inputCondicion').value = ''; setTimeout(() => document.getElementById('inputCondicion').focus(), 100); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+async function confirmarAddProducto() {
+  const name = document.getElementById('inputProducto').value.trim().toUpperCase();
+  if (!name) return;
+  if (productos.includes(name)) { showToast('Ese producto ya existe', 'error'); return; }
+  productos.push(name);
+  closeModal('modalProducto');
+  renderMatrix();
+  await saveToSheet();
+  showToast(`Producto "${name}" agregado`, 'success');
+}
+
+async function confirmarAddCondicion() {
+  const name = document.getElementById('inputCondicion').value.trim();
+  if (!name) return;
+  if (condiciones.includes(name)) { showToast('Esa condición ya existe', 'error'); return; }
+  condiciones.push(name);
+  closeModal('modalCondicion');
+  renderMatrix();
+  await saveToSheet();
+  showToast(`Condición "${name}" agregada`, 'success');
+}
+
+function pedirEliminarProducto(prod) {
+  document.getElementById('confirmTitle').textContent = `¿Eliminar "${prod}"?`;
+  document.getElementById('confirmMsg').textContent = `Esta acción eliminará el producto y todas sus fichas guardadas. No se puede deshacer.`;
+  document.getElementById('confirmBtn').onclick = () => eliminarProducto(prod);
+  document.getElementById('modalConfirm').classList.add('open');
+}
+
+async function eliminarProducto(prod) {
+  closeModal('modalConfirm');
+  productos = productos.filter(p => p !== prod);
+  condiciones.forEach(cond => delete fichas[makeKey(prod, cond)]);
+  if (currentCell && currentCell.producto === prod) {
+    currentCell = null;
+    document.getElementById('detailContent').classList.remove('visible');
+    document.getElementById('detailEmpty').style.display = '';
+  }
+  renderMatrix();
+  await saveToSheet();
+  showToast(`Producto "${prod}" eliminado`, 'success');
+}
+
+async function eliminarCondicion(cond) {
+  document.getElementById('confirmTitle').textContent = `¿Eliminar condición "${cond}"?`;
+  document.getElementById('confirmMsg').textContent = `Se eliminarán todas las fichas de esta condición para todos los productos.`;
+  document.getElementById('confirmBtn').onclick = async () => {
+    closeModal('modalConfirm');
+    condiciones = condiciones.filter(c => c !== cond);
+    productos.forEach(prod => delete fichas[makeKey(prod, cond)]);
+    renderMatrix();
+    await saveToSheet();
+    showToast(`Condición "${cond}" eliminada`, 'success');
+  };
+  document.getElementById('modalConfirm').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════
+// COPIAR
+// ═══════════════════════════════════════════════
+function copiarPubNum() {
+  const el = document.getElementById('f_pubnum');
+  if (!el || !el.value) { showToast('No hay número de publicación cargado', 'error'); return; }
+  copiarTexto(el.value);
+}
+
+function copiarTexto(txt) {
+  navigator.clipboard.writeText(txt).then(() => showToast('Copiado al portapapeles', 'success')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Copiado', 'success');
+  });
+}
+
+// ═══════════════════════════════════════════════
+// WHATSAPP
+// ═══════════════════════════════════════════════
+function compartirWA() {
+  if (!lastCalcResult || !currentCell) return;
+  const { precioPublicado, resultado, v } = lastCalcResult;
+  let msg = `📊 *Precios Publicaciones — ML PRO*\n`;
+  msg += `Producto: *${currentCell.producto}* · ${currentCell.condicion}\n\n`;
+  msg += `💰 *Precio de Publicación: ${formatM(precioPublicado)}*\n`;
+  msg += `📉 Descuento: ${v.descuento}% → Precio efectivo: ${formatM(resultado.precioVenta)}\n`;
+  msg += `🎯 Ganancia objetivo: ${formatM(v.gananciaObj)}\n`;
+  msg += `🏛️ IVA a pagar (AFIP): ${formatM(resultado.ivaAPagar)}\n`;
+  if (v.pubnum) msg += `🔗 Publicación: ${v.pubnum}\n`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ═══════════════════════════════════════════════
+// EXPORTAR EXCEL
+// ═══════════════════════════════════════════════
+function exportarExcel() {
+  // Build CSV (Excel-compatible)
+  const headers = ['Producto', ...condiciones, 'Precio Calculado', 'Ganancia Objetivo', 'N° Publicación'];
+  const rows = [headers];
+
+  productos.forEach(prod => {
+    condiciones.forEach(cond => {
+      const key = makeKey(prod, cond);
+      const ficha = fichas[key];
+      const row = [
+        prod, cond,
+        ficha && ficha.precioCalc ? ficha.precioCalc : '',
+        ficha && ficha.params && ficha.params.gananciaObj ? ficha.params.gananciaObj : '',
+        ficha && ficha.params && ficha.params.pubnum ? ficha.params.pubnum : ''
+      ];
+      // Fill condiciones columns
+      rows.push([prod, cond, ...condiciones.map(c => {
+        if (c !== cond) return '';
+        const f = fichas[makeKey(prod, c)];
+        return f && f.precioCalc ? f.precioCalc : '';
+      })]);
+    });
+  });
+
+  // Simpler flat export
+  const flatRows = [['Producto', 'Condición', 'Precio Publicación', 'Ganancia Objetivo', 'N° Publicación', '% Descuento', '% Comisión', '% Financiación', '% Publicidad', 'Envío $', 'Cargo Fijo $', 'Costo Producto $', '% Fallas', 'Otros Costos 1 $', 'Otros Costos 2 $', '% IIBB']];
+  productos.forEach(prod => {
+    condiciones.forEach(cond => {
+      const key = makeKey(prod, cond);
+      const ficha = fichas[key];
+      const p = ficha && ficha.params ? ficha.params : {};
+      flatRows.push([
+        prod, cond,
+        ficha && ficha.precioCalc ? ficha.precioCalc : '',
+        p.gananciaObj || '', p.pubnum || '',
+        p.descuento || '', p.comision || '', p.financiacion || '', p.publicidad || '',
+        p.envio || '', p.cargo || '', p.costo || '', p.fallas || '',
+        p.otros1 || '', p.otros2 || '', p.iibb || ''
+      ]);
+    });
+  });
+
+  const csv = flatRows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `precios-publicaciones-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Exportado correctamente', 'success');
+}
+
+// ═══════════════════════════════════════════════
+// SYNC INDICATORS
+// ═══════════════════════════════════════════════
+function setSyncing() {
+  document.getElementById('syncDot').className = 'sync-dot syncing';
+  document.getElementById('syncText').textContent = 'Sincronizando...';
+}
+
+function setSynced() {
+  document.getElementById('syncDot').className = 'sync-dot synced';
+  document.getElementById('syncText').textContent = 'Sincronizado';
+}
+
+function setError() {
+  document.getElementById('syncDot').className = 'sync-dot';
+  document.getElementById('syncText').textContent = 'Error de conexión';
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || '');
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════════
+// FORMAT / UTILS
+// ═══════════════════════════════════════════════
+function formatM(n) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return '$' + new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(n));
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function escAttr(s) {
+  return String(s).replace(/'/g,"\\'");
+}
+
+// ═══════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════
+init();
+</script>
+</body>
+</html>
