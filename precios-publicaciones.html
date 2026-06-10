@@ -1498,7 +1498,7 @@ function apiCall(action, params) {
     url.searchParams.set('action', action);
     url.searchParams.set('callback', cb);
     Object.entries(params).forEach(([k,v]) => {
-      url.searchParams.set(k, encodeURIComponent(typeof v === 'string' ? v : JSON.stringify(v)));
+      url.searchParams.set(k, typeof v === 'string' ? v : JSON.stringify(v));
     });
     const script = document.createElement('script');
     const timeout = setTimeout(() => { cleanup(); reject(new Error('Timeout')); }, 15000);
